@@ -27,29 +27,20 @@ language = "pt"
 
 results = []
 
+# Open/create a file to append data to
+csvFile = open('result.csv', 'w')
+
+#Use csv writer
+csvWriter = csv.writer(csvFile)
+
 for tweet in tweepy.Cursor(api.search,
                            q=query,
                            rpp=100,
                            lang="pt").items(200):
-	#print(tweet.text)
-	# results.append(tweet.text)
-    results = [[tweet.created_at, tweet.text]]
+  # Write a row to the CSV file. I use encode UTF-8
+    csvWriter.writerow([tweet.created_at, tweet.text])
+    print ([tweet.created_at, tweet.text])
+csvFile.close()
 
-#print(len(results))
-#
-print(results)
-
-outtweets = [[tweet.created_at, tweet.text] for item in results]
-
-# with open('%s_tweets.csv', 'wb') as f:
-#		writer = csv.writer(f)
-#		writer.writerow(["id","created_at","text"])
-#		writer.writerows(outtweets)
-
-with open('results.csv', 'w') as f:
-    writer = csv.writer(f)
-    #for item in results:
-    writer.writerow(["Data", "Tweet"])
-    writer.writerows(results)
 
 
