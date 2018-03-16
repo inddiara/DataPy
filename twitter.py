@@ -18,7 +18,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
 
 # Creating the API object while passing in auth information
-api = tweepy.API(auth) 
+api = tweepy.API(auth)
 
 # The search term you want to find
 query = "pje"
@@ -31,12 +31,15 @@ for tweet in tweepy.Cursor(api.search,
                            q=query,
                            rpp=100,
                            lang="pt").items(200):
-	print(tweet.text)
-	results.append(tweet.text)
+	#print(tweet.text)
+	# results.append(tweet.text)
+    results = [[tweet.created_at, tweet.text]]
 
-print(len(results))
+#print(len(results))
+#
+print(results)
 
-outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for item in results]
+outtweets = [[tweet.created_at, tweet.text] for item in results]
 
 # with open('%s_tweets.csv', 'wb') as f:
 #		writer = csv.writer(f)
@@ -45,5 +48,8 @@ outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for it
 
 with open('results.csv', 'w') as f:
     writer = csv.writer(f)
-    for item in results:
-        writer.writerows(outtweets)
+    #for item in results:
+    writer.writerow(["Data", "Tweet"])
+    writer.writerows(results)
+
+
